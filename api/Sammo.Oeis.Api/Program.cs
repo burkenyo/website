@@ -5,6 +5,7 @@ using Sammo.Oeis;
 using Sammo.Oeis.Api;
 
 var builder = WebApplication.CreateSlimBuilder(args);
+
 var config = builder.Configuration.Get<Config>() ?? new();
 WebApplication app;
 
@@ -52,6 +53,7 @@ try
     }
 
     services.ConfigureJsonOptions();
+    services.AddRegexRoutingConstraint();
 
     app = builder.Build();
 }

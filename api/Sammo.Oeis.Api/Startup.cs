@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using Azure.Core;
 using Azure.Identity;
 using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Extensions.FileProviders;
 using Sammo.Oeis;
 using Sammo.Oeis.Api;
@@ -78,6 +79,9 @@ static class StartupExtensions
             options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             options.SerializerOptions.TypeInfoResolver = DtoSerializerContext.Default;
         });
+
+    public static void AddRegexRoutingConstraint(this IServiceCollection services) =>
+        services.Configure<RouteOptions>(options => options.SetParameterPolicy<RegexInlineRouteConstraint>("regex"));
 
     public static void UseThisAssemblySwaggerUi(this WebApplication app) =>
         app.UseSwaggerUI(static options =>

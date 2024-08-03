@@ -10,37 +10,20 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Sammo.Oeis;
 
-struct RentedArray<T> : IDisposable where T : unmanaged
+readonly struct RentedArray<T> : IDisposable where T : unmanaged
 {
     readonly static ArrayPool<T> s_pool = ArrayPool<T>.Shared;
 
-    readonly T[] _array;
-
-    bool _disposed = false;
-
-    readonly public T[] Array
-    {
-        get
-        {
-            ObjectDisposedException.ThrowIf(_disposed, typeof(RentedArray<T>));
-
-            return _array;
-        }
-    }
+    public T[] Array { get; }
 
     public RentedArray(int size)
     {
-        _array = s_pool.Rent(size);
+        Array = s_pool.Rent(size);
     }
 
     public void Dispose()
     {
-        if (_disposed)
-        {
-            s_pool.Return(_array ?? []);
-        }
-
-        _disposed = true;
+        s_pool.Return(Array);
     }
 }
 
@@ -58,78 +41,6 @@ static class BufferUtils
     /// The maximum number of chars that methods which use buffers should attempt to allocate on the stack
     /// </summary>
     public const int MaxStackAllocChars = MaxStackAllocBytes / sizeof(char);
-
-    /// <summary>
-    /// Represents a method that uses a provided buffer to perform work
-    /// </summary>
-    /// <typeparam name="TItem">The type of items in the provided buffer</typeparam>
-    /// <param name="buffer">The buffer provided to the delegate</param>
-    public delegate void BufferAction<TItem>(Span<TItem> buffer) where TItem : unmanaged;
-
-    /// <summary>
-    /// Represent a method that uses a provided buffer to perform work and returns a result
-    /// </summary>
-    /// <typeparam name="TItem">The type of items in the provided buffer</typeparam>
-    /// <typeparam name="TResult">The type of object returned by the delegate</typeparam>
-    /// <param name="buffer">The buffer provided to the delegate</param>
-    public delegate TResult BufferFunc<TItem, TResult>(Span<TItem> buffer) where TItem : unmanaged;
-
-    public static int MaxStackAlloc<T>() where T : unmanaged =>
-        MaxStackAllocBytes / Unsafe.SizeOf<T>();
-
-    // <summary>
-    /// Calls the given <see cref="BufferAction{TItem}" /> delegate with a provided buffer.
-    /// The buffer is allocated on the stack if the necessary size of the buffer is
-    /// less than or equal to <see cref="MaxStackAllocBytes" />. Otherwise, the buffer is rented on the heap
-    /// and returned when this method returns.
-    /// </summary>
-    /// <typeparam name="TItem">The type of items in the provided buffer</typeparam>
-    /// <param name="bufferLength">The number of items in the provided buffer</param>
-    /// <param name="bufferAction">The delegate that performs work using the provided buffer/param>
-    public static void CallWithBuffer<TItem>(int bufferLength, BufferAction<TItem> bufferAction)
-        where TItem : unmanaged
-    {
-        if (bufferLength <= MaxStackAlloc<TItem>())
-        {
-            Span<TItem> buffer = stackalloc TItem[bufferLength];
-
-            bufferAction(buffer);
-        }
-        else
-        {
-            using var rented = new RentedArray<TItem>(bufferLength);
-
-            bufferAction(rented.Array.AsSpan(0, bufferLength));
-        }
-    }
-
-    // <summary>
-    /// Calls the given <see cref="BufferFunc{TItem, TResult}" /> delegate with a provided buffer.
-    /// The buffer is allocated on the stack if the necessary size of the buffer is
-    /// less than or equal to <see cref="MaxStackAllocBytes" />. Otherwise, the buffer is rented on the heap
-    /// and returned when this method returns.
-    /// </summary>
-    /// <typeparam name="TItem">The type of items in the provided buffer</typeparam>
-    /// <typeparam name="TResult">The type of object returned by the delegate</typeparam>
-    /// <param name="bufferLength">The number of items in the provided buffer</param>
-    /// <param name="bufferFunc">The delegate that performs work using the provided buffer and returns a result</param>
-    /// <returns>The result of the <see cref="BufferFunc{TItem, TResult}" /> delegate</returns>
-    public static TResult CallWithBuffer<TItem, TResult>(int bufferLength, BufferFunc<TItem, TResult> bufferFunc)
-        where TItem : unmanaged
-    {
-        if (bufferLength <= MaxStackAlloc<TItem>())
-        {
-            Span<TItem> buffer = stackalloc TItem[bufferLength];
-
-            return bufferFunc(buffer);
-        }
-        else
-        {
-            using var rented = new RentedArray<TItem>(bufferLength);
-
-            return bufferFunc(rented.Array.AsSpan(0, bufferLength));
-        }
-    }
 }
 
 [InlineArray(BufferUtils.MaxStackAllocBytes)]

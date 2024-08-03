@@ -12,8 +12,6 @@
 
     <UserSecretsId>cf553d37-6875-4e76-b7e1-403c52ee9684</UserSecretsId>
 
-    <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
-
     <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
     <ContainerRuntimeIdentifier>linux-x64</ContainerRuntimeIdentifier>
 
@@ -22,12 +20,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitInfo" Version="3.3.3">
+    <PackageReference Include="GitInfo" Version="3.3.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.14" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
 
     <ProjectReference Include="../Sammo.Oeis.Azure/Sammo.Oeis.Azure.csproj" />
   </ItemGroup>

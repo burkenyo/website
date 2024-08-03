@@ -1,6 +1,7 @@
 // Copyright © 2023 Samuel Justin Gabay
 // Licensed under the GNU Affero Public License, Version 3
 
+using System.Buffers;
 using System.Collections;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -642,7 +643,11 @@ public partial class Fractional : IEquatable<Fractional>
         {
             // fast path for base-10 numbers using parsing
             // profiling showed this to be 15 - 100 X faster.
-            valueAsBigInt = BufferUtils.CallWithBuffer<char, BigInteger>(valueDigitCount, buffer =>
+            char[]? bufferArray = null;
+            var buffer = valueDigitCount > BufferUtils.MaxStackAllocChars
+                ? ArrayPool<char>.Shared.Rent(valueDigitCount).AsSpan()[..valueDigitCount]
+                : stackalloc char[valueDigitCount];
+            try
             {
                 var i = 0;
 
@@ -651,8 +656,16 @@ public partial class Fractional : IEquatable<Fractional>
                     buffer[i++] = (char)('0' + digit);
                 }
 
-                return BigInteger.Parse(buffer);
-            });
+                valueAsBigInt = BigInteger.Parse(buffer);
+            }
+            finally
+            {
+                if (bufferArray is not null)
+                {
+                    ArrayPool<char>.Shared.Return(bufferArray);
+                }
+            }
+
         }
         else
         {
@@ -826,7 +839,11 @@ public partial class Fractional : IEquatable<Fractional>
             bufferSize++;
         }
 
-        return BufferUtils.CallWithBuffer<char, string>(bufferSize, buffer =>
+        char[]? bufferArray = null;
+        var buffer = bufferSize > BufferUtils.MaxStackAllocChars
+            ? ArrayPool<char>.Shared.Rent(bufferSize).AsSpan()[..bufferSize]
+            : stackalloc char[bufferSize];
+        try
         {
             int i = 0;
             if (style == FRAC_PART_ONLY)
@@ -847,6 +864,7 @@ public partial class Fractional : IEquatable<Fractional>
                 {
                     buffer[i++] = fractionalSeparator;
                 }
+
                 buffer[i++] = getDigit(digit);
 
                 if (++j == count)
@@ -863,7 +881,14 @@ public partial class Fractional : IEquatable<Fractional>
             Debug.Assert(buffer[^1] != '\0', "Buffer was not filled!");
 
             return new String(buffer);
-        });
+        }
+        finally
+        {
+            if (bufferArray is not null)
+            {
+                ArrayPool<char>.Shared.Return(bufferArray);
+            }
+        }
     }
 
     public bool Equals([NotNullWhen(true)] Fractional? other) =>
