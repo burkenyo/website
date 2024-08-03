@@ -4,7 +4,6 @@
 /// <reference types="../utility-types" />
 
 import { spawnSync } from "node:child_process";
-import { type } from "node:os";
 
 export function invokeCommand(name: string, args: readonly string[]): Optional<string> {
   const result = spawnSync(name, args);

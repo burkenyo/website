@@ -5,6 +5,7 @@
   ],
   "include": ["vite.config.*", "vitest.config.*", "cypress.config.*", "playwright.config.*", "scripts"],
   "compilerOptions": {
+    "noEmit": false,
     "composite": true,
     "types": ["node"]
   }

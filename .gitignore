@@ -279,6 +279,7 @@ coverage
 /cypress/screenshots/
 
 # misc
+*.tsbuildinfo
 .vite-ssg-tmp/
 sammo-oeis-api--config.json
 data/

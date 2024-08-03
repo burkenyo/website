@@ -28,7 +28,8 @@ type Json = JsonScalar | JsonArray | JsonObject;
 type JsonArray = Json[];
 type JsonObject = { [key: string]: Json };
 
-// override the provided declaration of JSON.parse to return a known type
+// Override the provided declaration of JSON.parse to return a known type.
+// This requires omitting the reviver parameter, which could create arbitrary objects.
 interface JSON {
-  parse(text: string, reviver?: ((this: any, key: string, value: any) => any) | undefined) : Json
+  parse(text: string) : Json
 }

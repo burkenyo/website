@@ -15,7 +15,7 @@ import type { RootNode, TemplateChildNode, AttributeNode } from "@vue/compiler-c
 import path from "node:path";
 
 // markdown-it plugins
-import mdEmoji from "markdown-it-emoji";
+import { full as mdEmoji } from "markdown-it-emoji";
 import mdSub from "markdown-it-sub";
 import mdSup from "markdown-it-sup";
 import mdAnchor from "markdown-it-anchor";
@@ -180,7 +180,7 @@ function rewriteSubAppPages(subApp: string, pages: string[]): Plugin {
 
 // NodeTransform function to add target="_blank" attribute for external links
 // This only works for links with a static href attribute.
-// Dynamic URLs are supported via the v-href directive provided in src/main.ts
+// Dynamic URLs are supported via the v-href directive provided in src/shared/plugins.ts
 function setLinkTarget(node: RootNode | TemplateChildNode): void {
   if (!("tag" in node) || node.tag != "a") {
     return;
@@ -200,7 +200,8 @@ function setLinkTarget(node: RootNode | TemplateChildNode): void {
       loc: href.value.loc,
     },
     loc: href.loc,
-  });
+    nameLoc: href.nameLoc
+  } as AttributeNode);
 }
 
 function resolve(relativePath: string): string {
