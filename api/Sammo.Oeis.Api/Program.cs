@@ -39,6 +39,8 @@ try
         services.AddScoped<IOeisDozenalExpansionService, OeisDozenalExpansionService>();
     }
 
+    services.SetLogFormatter(config.LogFormatter);
+
     services.AddHttpClient<IOeisDecimalExpansionDownloader, OeisDecimalExpansionDownloader>();
 
     services.AddWebApi<ExpansionsApi>();

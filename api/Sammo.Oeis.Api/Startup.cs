@@ -8,6 +8,7 @@ using Azure.Identity;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging.Console;
 using Sammo.Oeis;
 using Sammo.Oeis.Api;
 
@@ -17,6 +18,14 @@ using Sammo.Oeis.Api;
 /// </summary>
 static class StartupExtensions
 {
+    /// <remarks>
+    /// When using WebApplication.CreateBuilder(), the formatter is automatically selected
+    /// from the config entry “Logging:Console:FormatterName”. In the case of CreateSlimBuilder(),
+    /// this selection is not performed, so this method fills that gap.
+    /// </remarks>
+    public static void SetLogFormatter(this IServiceCollection services, string? formatterName) =>
+        services.Configure<ConsoleLoggerOptions>(options => options.FormatterName = formatterName);
+
     public static void AddOeisDozenalExpansionFileStore(
         this IServiceCollection services, Config.FileStoreConfig config, out DirectoryInfo dataDir)
     {

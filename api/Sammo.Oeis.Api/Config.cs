@@ -76,6 +76,7 @@ class Config : IConfig
                 .ToArray();
     }
 
+    public string? LogFormatter { get; init; }
     public bool NoAzure { get; init; }
     public bool AllowDebugBuildInContainer { get; init; }
     public FileStoreConfig FileStore { get; init; } = new();
