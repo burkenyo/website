@@ -55,7 +55,7 @@ if (import.meta.env.SSR) {
   <nav class="menu">
     <span> <!-- left-side menu items -->
       <span class="menu-item" v-for="route in menuRoutes" :key="route.name">
-        <template v-if="route.name == $route.name">{{ route.title }}</template>
+        <template v-if="route.name == $route.name"><span class="a-tad-bold">{{ route.title }}</span></template>
         <RouterLink v-else :to="{ name: route.name }">{{ route.title }}</RouterLink>
       </span>
       <span class="menu-item" v-for="link in menuLinks" :key="link.url">
@@ -74,6 +74,10 @@ nav {
   display: flex;
   justify-content: space-between;
   gap: 2em;
+}
+
+span.a-tad-bold {
+  font-weight: 500;
 }
 
 span.menu-item + span.menu-item::before {
