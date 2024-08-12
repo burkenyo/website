@@ -20,7 +20,7 @@ import ExperienceSection from "@main/components/ExperienceSection.vue";
 <a href="__ASSETS_BASE_URL/SGabay_Resume.pdf">Download a copy</a>
 </HeaderWithContent>
 
-Years of integration experience and back-end programming in multiple languages have honed my ability to create scalable and flexible systems. I have recently undertaken to massively scale my front-end knowledge as well. I seek opportunities to apply my aptitude and insatiable appetite for learning new technologies to the world where code meets art.
+Twelve years of integration experience and full-stack programming in multiple languages have honed my ability to create scalable and flexible cloud-native systems. I seek opportunities to apply my aptitude and insatiable appetite for learning new technologies to the world where code meets art.
 
 <section>
 
@@ -99,19 +99,21 @@ Dexterity across desktop and server OS’s
 <ExperienceSection>
 <template #header>
 
-  #### 2022 – present
+  #### 2023 – present
 
-  <a href="https://cantera.org/">
+  <a href="https://www.avigilon.com/">
 
-  #### Cantera
+  #### Avigilon, a Motorola Solutions company
   </a>
 
   #### Somerville, MA
-  #### C#/Python specialist
+  #### Senior Developer, Unity Cloud Video
 </template>
 
-* Introduce a new interface to consume a complicated scientific computing toolset from .NET by leveraging high-performance, low-level interop techniques.
-* Develop a Python-based source generator to automate scaffolding C# code from the underlying C API
+* Integrate the on-premises video security solution to the greater MSI cloud ecosystem to provide enterprise customers with a complete physical security solution
+* Fulfill customer expectations of a life-saving solution through excellent performance and reliability
+* Accelerated from quarterly to weekly releases while simultaneously improving auditability throughout the build/deploy process
+* Realized a 90% reduction in site-to-cloud update latency through a rewrite of the legacy directory API
 </ExperienceSection>
 
 <ExperienceSection>
@@ -124,15 +126,12 @@ Dexterity across desktop and server OS’s
   </a>
 
   #### Andover, MA
-  #### Software Engineer
+  #### Software Engineer, Social Club Services
 </template>
 
 * Developed and maintained the online services platform with over 100 million distinct users and 1 million
 concurrently online players
 * Provided operational support for title releases/updates, minimizing down-time during high usage periods
-* Fostered a culture of quality by writing unit tests for each new piece of code, performing stringent code
-reviews daily (including as approver), and submitting code changes only through our CI/CD pipeline
-* Adhered to a stringent set of coding standards while championing modernization
 * Innovated new services in coordination with the game engine team to provide more features for players
 </ExperienceSection>
 
