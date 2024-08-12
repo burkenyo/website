@@ -40,15 +40,15 @@ a:hover {
   transition: box-shadow 200ms;
 }
 
-a:nth-of-type(3n + 1) {
+a.green {
   border-top: 4px solid var(--orange);
 }
 
-a:nth-of-type(3n + 2) {
+a.orange {
   border-top: 4px solid var(--green);
 }
 
-a:nth-of-type(3n) {
+a.purple {
   border-top: 4px solid var(--purple-lighter);
 }
 

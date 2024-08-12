@@ -9,14 +9,42 @@
 </route>
 
 <script setup lang="ts">
+import { ref, onMounted } from "vue"
+import { pickRandom, shuffle } from "@shared/utils"
 import ConstantIcon from "@melodies/components/ConstantIcon.vue";
 import ProjectInfo from "@main/components/ProjectInfo.vue";
 import { localUrlForSubApp } from "@main/helpers";
+
+const section = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+  const possibleColors = ["green", "orange", "purple"] as const;
+
+  const projectElements = section.value!.children;
+
+  // randomize the colors of the project headers while ensure there is always at least one of each color
+  const colors = [...possibleColors];
+  for (let i = colors.length; i < projectElements.length; i++)
+  {
+    colors.push(pickRandom(possibleColors));
+  }
+
+  shuffle(colors);
+
+  for (let i = 0; i < projectElements.length; i++)
+  {
+    projectElements[i].classList.add(colors[i]);
+  }
+})
+
 </script>
 
 <template>
   <h2>Selected Projects</h2>
-  <section class="projects">
+  <section class="projects" ref="section">
+    <ProjectInfo title="IoT at .NET Conf 2023" href="https://www.youtube.com/watch?v=zwkspYxtFAE" icon-src="/icons/dotnet_bot.png">
+      Smart home automation which leverages C# on resource-constrained devices: an ESP32-series microcontroller and a Raspberry Pi.
+    </ProjectInfo>
     <ProjectInfo title="Ranked Choice Voting" :href="localUrlForSubApp('/vote-demo')">
       Demo of a site I created to help my brass band select a new name, with a dashboard of plots
       and the ability to download anonymized ballots for hand-counting.
@@ -29,9 +57,9 @@ import { localUrlForSubApp } from "@main/helpers";
       Using the fractional expansion of numbers such as
       <ConstantIcon tag="pi"/> and <ConstantIcon tag="e"/> to generate musical melodies.
     </ProjectInfo>
-    <ProjectInfo title="sammo.ga – This site!" href="/about">
-      A labor of love (or necessity?) as I endeavored to learn front-end web technologies
-      and build a web site from scratch.
+    <ProjectInfo title="sammo.ga – This site" href="/about">
+      I built this site from scratch using Vue with hand-written CSS. A workflow
+      automatically integrates committed changes.
     </ProjectInfo>
   </section>
 </template>
