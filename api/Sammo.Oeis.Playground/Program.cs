@@ -109,7 +109,7 @@ static class Program
 
     static BlobContainerClient GetContainerClient()
     {
-        const string accountName = "roflninjastorage";
+        const string accountName = "orangewave";
         const string containerName = "sammo-ga";
 
         var containerUri = new Uri($"https://{accountName}.blob.core.windows.net/{containerName}");

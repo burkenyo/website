@@ -43,30 +43,20 @@ static class BufferUtils
     public const int MaxStackAllocChars = MaxStackAllocBytes / sizeof(char);
 }
 
-[InlineArray(BufferUtils.MaxStackAllocBytes)]
+[InlineArray(Capacity)]
 struct ByteBuffer
 {
     byte _;
 
-    public int Length =>
-        AsSpan().Length;
-
-    [UnscopedRef]
-    public Span<byte> AsSpan() =>
-        this;
+    public const int Capacity = BufferUtils.MaxStackAllocBytes;
 }
 
-[InlineArray(BufferUtils.MaxStackAllocChars)]
+[InlineArray(Capacity)]
 struct CharBuffer
 {
     char _;
 
-    public int Length =>
-        AsSpan().Length;
-
-    [UnscopedRef]
-    public Span<char> AsSpan() =>
-        this;
+    public const int Capacity = BufferUtils.MaxStackAllocChars;
 }
 
 ref struct StackStringBuilder
@@ -75,11 +65,8 @@ ref struct StackStringBuilder
 
     public int Position { get; private set; }
 
-    public int Capacity =>
-         _buffer.Length;
-
     public int RemainingCapacity =>
-        Capacity - Position;
+        CharBuffer.Capacity - Position;
 
     public void Append(ReadOnlySpan<char> value)
     {

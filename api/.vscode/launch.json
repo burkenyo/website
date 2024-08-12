@@ -23,7 +23,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 //"UseFileStore": "true",
                 "FileStore:DataDirectory": "${workspaceFolder}/data",
-                "Azure:Blobs:AccountName": "roflninjastorage",
+                "Azure:Blobs:AccountName": "orangewave",
                 "Azure:Blobs:ContainerName": "sammo-ga"
             },
             "sourceFileMap": {
