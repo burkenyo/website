@@ -23,7 +23,7 @@ jobs:
 
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Test
         id: test
@@ -39,7 +39,7 @@ jobs:
 
       - name: Login to GitHub Packages
         id: dockerlogin
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: burkenyo
@@ -58,7 +58,7 @@ jobs:
     steps:
       - name: Login to Azure
         id: azurelogin
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_AD_APP_IDENTITY_CREDENTIALS }}
 
