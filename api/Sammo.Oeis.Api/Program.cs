@@ -41,7 +41,7 @@ try
 
     services.SetLogFormatter(config.LogFormatter);
 
-    services.AddHttpClient<IOeisDecimalExpansionDownloader, OeisDecimalExpansionDownloader>();
+    services.AddHttpClientWithMinimalLogger<IOeisDecimalExpansionDownloader, OeisDecimalExpansionDownloader>();
 
     services.AddWebApi<ExpansionsApi>();
 

@@ -4,6 +4,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Http.Logging;
 
 namespace Sammo.Oeis.Api;
 
@@ -82,6 +83,48 @@ static class ServiceCollectionExtensions
         services.TryAddScoped<TApi>();
 
         return services;
+    }
+
+    public static IServiceCollection AddHttpClientWithMinimalLogger<TClient, TImplementation>(this IServiceCollection services)
+        where TClient : class where TImplementation : class, TClient
+    {
+        services.AddHttpClient<TClient, TImplementation>()
+            .RemoveAllLoggers()
+            .AddLogger(provider =>
+                new MinimalHttpClientLogger(provider.GetRequiredService<ILogger<TImplementation>>()));
+
+        return services;
+    }
+
+    class MinimalHttpClientLogger : IHttpClientLogger
+    {
+        readonly ILogger _logger;
+
+        internal MinimalHttpClientLogger(ILogger logger)
+        {
+            _logger = logger;
+        }
+
+        public object? LogRequestStart(HttpRequestMessage request) =>
+            // client may modify the request URI in the case of redirects, examine the original here
+            request.RequestUri;
+
+        public void LogRequestStop(object? requestUri, HttpRequestMessage request, HttpResponseMessage response,
+            TimeSpan elapsed)
+        {
+            var numericStatusCode = (int)response.StatusCode;
+            var logLevel = numericStatusCode < 400 ? LogLevel.Information : LogLevel.Warning;
+
+            _logger.Log(logLevel, "{Method} {Uri} - {StatusCode} ({StatusCodeLiteral}) in {Time}ms",
+                request.Method, requestUri, numericStatusCode, response.StatusCode, elapsed.TotalMilliseconds);
+        }
+
+        public void LogRequestFailed(object? requestUri, HttpRequestMessage request, HttpResponseMessage? response,
+            Exception exception, TimeSpan elapsed)
+        {
+            _logger.LogError(exception, "{Method} {Uri} failed in {Time}ms!",
+                request.Method, requestUri, elapsed.TotalMilliseconds);
+        }
     }
 }
 
