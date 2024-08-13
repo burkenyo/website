@@ -12,4 +12,4 @@
 
 The page you were looking for was not found. So, here’s Ronnie instead:
 
-![Ronnie](__ASSETS_BASE_URL/ronnie.png)
+![Ronnie](__ASSETS_BASE_URL/ronnie.png){.w75}

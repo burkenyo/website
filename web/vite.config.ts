@@ -16,6 +16,7 @@ import path from "node:path";
 
 // markdown-it plugins
 import { full as mdEmoji } from "markdown-it-emoji";
+import mdAttr from "markdown-it-attrs";
 import mdSub from "markdown-it-sub";
 import mdSup from "markdown-it-sup";
 import mdAnchor from "markdown-it-anchor";
@@ -56,6 +57,8 @@ export default defineConfig(({ command, mode, isSsrBuild }) => {
         markdownItSetup(md) {
           md.use(mdEmoji);
 
+          md.use(mdAttr);
+
           // enable subscripts using ~X~
           md.use(mdSub);
 
@@ -65,8 +68,8 @@ export default defineConfig(({ command, mode, isSsrBuild }) => {
           // automatically generate IDs for h3’s
           md.use(mdAnchor, { tabIndex: false, level: [3] });
 
-          // place images inside figures
-          md.use(mdImageFigures);
+          // place images inside figures, copying classes set via markdown-it-attrs to the figure
+          md.use(mdImageFigures, { figcaption: "title", copyAttrs: "class" });
         },
       }),
 

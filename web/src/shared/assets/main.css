@@ -189,12 +189,18 @@ div#engrave-area {
 }
 
 figure {
-  margin: 2em 0;
+  margin: 2em auto;
 }
 
 figure > img {
   width: 100%;
   box-shadow: 0 0 8px var(--grey-darker);
+}
+
+figcaption {
+  text-align: center;
+  font-size: smaller;
+  font-style: italic;
 }
 
 div.layout-standard {
