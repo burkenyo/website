@@ -18,17 +18,23 @@ import { localUrlForSubApp } from "@main/helpers";
 const section = ref<HTMLElement | null>(null);
 
 onMounted(() => {
-  const possibleColors = ["green", "orange", "purple"] as const;
+  const possibleColors = ["green", "orange", "purple"];
+  shuffle(possibleColors)
 
   const projectElements = section.value!.children;
+  const fullGroups = projectElements.length / possibleColors.length | 0;
+  const leftovers = projectElements.length % possibleColors.length;
 
-  // randomize the colors of the project headers while ensure there is always at least one of each color
-  const colors = [...possibleColors];
-  for (let i = colors.length; i < projectElements.length; i++)
+  // randomize the colors of the project headers while ensuring there is always at least some of each color
+  const colors = [];
+  for (let i = 0; i < fullGroups; i++)
   {
-    colors.push(pickRandom(possibleColors));
+    colors.push(...possibleColors);
   }
-
+  for (let i = 0; i < leftovers; i++)
+  {
+    colors.push(possibleColors.pop() as string);
+  }
   shuffle(colors);
 
   for (let i = 0; i < projectElements.length; i++)
