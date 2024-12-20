@@ -1,10 +1,10 @@
-<!-- Copyright © 2023 Samuel Justin Gabay
+<!-- Copyright © 2024 Samuel Justin Speth Gabay
      Licensed under the GNU Affero Public License, Version 3 -->
 
 <route>
 { meta: {
   title: "Home",
-  description: "Samuel Justin Gabay – aka Sammo Gabay – multi-talented software developer and music composer \
+  description: "Samuel Justin Speth Gabay – aka Sammo Gabay – multi-talented software developer and music composer \
 interested in the cross-connections between code, music, art, and life"
 } }
 </route>

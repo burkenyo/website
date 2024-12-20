@@ -1,4 +1,4 @@
-// Copyright © 2023 Samuel Justin Gabay
+// Copyright © 2024 Samuel Justin Speth Gabay
 // Licensed under the GNU Affero Public License, Version 3
 
 // This needs to be separate from services.ts to avoid chaos with the module resolution order

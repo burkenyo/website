@@ -1,4 +1,4 @@
-// Copyright © 2023 Samuel Justin Gabay
+// Copyright © 2024 Samuel Justin Speth Gabay
 // Licensed under the GNU Affero Public License, Version 3
 
 import { ref, type Ref } from "vue";
@@ -10,7 +10,7 @@ const FAMILY_NAME = "Gabay";
 
 const GIVEN_NAMES: readonly string[] = [
   "Sammo",
-  "Samuel Justin"
+  "Samuel Justin Speth"
 ];
 
 let oldGivenName: string;
